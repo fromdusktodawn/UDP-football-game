@@ -15,6 +15,7 @@ int data_port;
 int port = 0;
 struct Bpoint ball;
 struct BallStatus ball_status;
+struct Score score;
 
 extern struct Map court;
 extern WINDOW *Football, *Message, *Help, *Score, *Write;
