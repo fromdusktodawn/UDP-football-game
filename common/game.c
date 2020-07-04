@@ -140,6 +140,6 @@ void show_message(WINDOW *win, struct User *user, char *msg, int type) {
     wattron(win, COLOR_PAIR(5));
     w_gotoxy_puts(win, 1, Message_num, timestr);
     Message_num++;
-    wrefresh(win);
+    //wrefresh(win);
     return ;
 }

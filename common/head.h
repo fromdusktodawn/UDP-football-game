@@ -42,7 +42,6 @@
 #include "./send_ctl.h"
 #include "./server_re_draw.h"
 #include "./server_exit.h"
-#include "./send_ctl_stop.h"
 #include "./client_recv.h"
 #include "./show_data_stream.h"
 #include "./show_strength.h"

@@ -30,10 +30,15 @@ void show_strength() {
         char c = getchar();
         if (c != -1) {
             if (c == ' ' || c == 'k') {
+                for (int i = 2; i < maxx - 2; i++) {
+                    wattron(Write, COLOR_PAIR(3));
+                    mvwprintw(Write, 2, i, " ");
+                }
+                make_block(0);
                 break;
             }
         }
-        usleep(20000);
+        usleep(5000);
         if (mousex >= maxx - 2) {
             offset = -1;
         } else if (mousex <= 2) {
@@ -55,6 +60,5 @@ void show_strength() {
     msg.ctl.action = ACTION_KICK;
     msg.ctl.strength = arr[mousex / (maxx / 5)];
     send(sockfd, &msg, sizeof(msg), 0);
-    
     return ;
 }

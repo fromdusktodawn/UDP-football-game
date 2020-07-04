@@ -15,3 +15,31 @@ void send_ctl() {
     }
     ctl_msg.ctl.dirx = ctl_msg.ctl.diry = 0;
 }
+
+void send_ctl_stop() {
+    struct FootBallMsg msg;
+    bzero(&msg, sizeof(msg));
+    msg.type = FT_CTL;
+    msg.ctl.action = ACTION_STOP;
+    send(sockfd, (void *)&msg, sizeof(msg), 0);
+    return ;
+}
+
+void send_ctl_kick() {
+    struct FootBallMsg msg;
+    bzero(&msg, sizeof(msg));
+    msg.type = FT_CTL;
+    msg.ctl.action = ACTION_KICK;
+    send(sockfd, (void *)&msg, sizeof(msg), 0);
+    return ;
+}
+
+void send_ctl_carry() {
+    struct FootBallMsg msg;
+    bzero(&msg, sizeof(msg));
+    msg.type = FT_CTL;
+    msg.ctl.action = ACTION_CARRY;
+    send(sockfd, (void *)&msg, sizeof(msg), 0);
+    return ;
+}
+

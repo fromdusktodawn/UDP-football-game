@@ -8,4 +8,7 @@
 #ifndef _SEND_CTL_H
 #define _SEND_CTL_H
 void send_ctl();
+void send_ctl_stop();
+void send_ctl_kick();
+void send_ctl_carry();
 #endif
