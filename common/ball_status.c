@@ -32,3 +32,15 @@ int can_kick(struct Point *loc, int strength) {
     }
     return 0;
 }
+
+int can_stop(struct Point *loc) {
+    int px = loc->x - 2, py = loc->y - 1;
+    if (abs(px - (int)ball.x) <= 2 && abs(py - (int)ball.y) <= 2) {
+        ball_status.a.x = 0;
+        ball_status.a.y = 0;
+        ball_status.v.x = 0;
+        ball_status.v.y = 0;
+        return 1;
+    }
+    return 0;
+}

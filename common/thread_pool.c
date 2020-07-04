@@ -56,6 +56,13 @@ void do_echo(struct User *user) {
                 strcpy(ball_status.name, user->name);
             }
         }
+        if (msg.ctl.action & ACTION_STOP) {
+            show_data_stream('s');
+            if (can_stop(&user->loc)) {
+                ball_status.who = user->team;
+                strcpy(ball_status.name, user->name);
+            }
+        }
     }
 }
 

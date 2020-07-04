@@ -34,7 +34,7 @@ struct User {
 
 #define ACTION_KICK 0x01
 #define ACTION_CARRY 0x02
-#define ACTION_STOP 0x03
+#define ACTION_STOP 0x04
 
 struct Ctrl {
     int action;

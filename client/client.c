@@ -161,7 +161,10 @@ int main(int argc, char **argv)  {
             } break;
             case ' ': {
                 show_strength();
-            }
+            } break;
+            case 'j': {
+                send_ctl_stop();
+            } break;
             default : break;
         }
     }
