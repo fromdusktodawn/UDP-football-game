@@ -9,6 +9,7 @@
 #include "head.h"
 
 struct Map court;
+extern struct Score score;
 
 WINDOW *Football, *Football_t, *Message, *Help, *Score, *Write;
 char info[3][1024] = {0};
@@ -103,6 +104,7 @@ void initfootball() {
     Help = create_newwin(20, court.heigth + 2, court.start.x + court.width + 2, court.start.y - 1);
     Score = create_newwin(20, 7, court.start.x + court.width + 2, court.start.y + court.heigth + 1);
     Write = create_newwin(court.width + 20 + 4, 5, court.start.x - 2, court.start.y + court.heigth + 7 + 1);
+    Show_Score();
     return ;
 }
 
@@ -141,5 +143,15 @@ void show_message(WINDOW *win, struct User *user, char *msg, int type) {
     w_gotoxy_puts(win, 1, Message_num, timestr);
     Message_num++;
     wrefresh(win);
+    return ;
+}
+
+void Show_Score() {
+    werase(Score);
+    box(Score, 0, 0);
+    char tmp[512] = {0};
+    sprintf(tmp, "blue %d : %d red", score.blue, score.red);
+    w_gotoxy_puts(Score, 3, 3, tmp);
+    wrefresh(Score);
     return ;
 }

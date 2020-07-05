@@ -9,7 +9,7 @@
 
 extern struct Map court;
 extern struct User *rteam, *bteam;
-extern WINDOW *Message, *Football, *Football_t;
+extern WINDOW *Message, *Football, *Football_t, *Score;
 extern struct Bpoint ball;
 extern struct BallStatus ball_status;
 extern struct Score score;
@@ -49,28 +49,25 @@ void re_draw_ball() {
     } else {
         ball.x = (int)ball.x;
         ball.y = (int)ball.y;
-        //if (ball_status.a.x || ball_status.a.y) {
         if (ball_status.a.x || ball_status.a.y || ball_status.carry) {
             char tmp[512] = {0};
-            struct User user;
             if (ball_status.who) {
                 if (ball.x == 0 && (int)ball.y < court.heigth / 2 + 4 && (int)ball.y > court.heigth / 2 - 4) {
                     ball_status.carry = 0;
                     sprintf(tmp, "%s of %s team, get 1 score", ball_status.name, "blue");
-                    sprintf(user.name, "%s", "Server Info");
-                    user.team = ball_status.who;
+                    Show_Message(, , tmp, 1);
                     score.blue += 1;
                     ball_status.carry = 0;
-                    Show_Message(, &user, tmp, );
+                    Show_Score();
                 }
             } else {
                 if (ball.x == court.width - 1 && (int)ball.y < court.heigth / 2 + 3 && (int)ball.y > court.heigth / 2 - 3) {
                     ball_status.carry = 0;
                     sprintf(tmp, "%s of %s team, get 1 score", ball_status.name, "red");
-                    sprintf(user.name, "%s", "Server Info");
-                    user.team = ball_status.who;
+                    Show_Message(, , tmp, 1);
                     score.red += 1;
-                    Show_Message(, &user, tmp, );
+                    ball_status.carry = 0;
+                    Show_Score();
                 }
             }
         }
@@ -84,6 +81,55 @@ void re_draw_ball() {
     w_gotoxy_putc(Football, (int)ball.x, (int)ball.y, 'O');
 }
 
+char *create_cjson_football() {
+    char *string = NULL;
+    cJSON *reds = NULL;
+    cJSON *blues = NULL;
+    cJSON *balls = NULL;
+    cJSON *name = NULL;
+    cJSON *who = NULL;
+    cJSON *x = NULL;
+    cJSON *y = NULL;
+    //cJSON_CreateStirng("string");
+    //cJSON_AddItemToObject(monitor, "name", name);
+    //cJSON_AddStringItemToObject(monitor, "name", "string");
+    //resolutions = cJSON_CreateArray();
+    //cJSON_AddItemToObject(monitor, "resolutions", resolutions);
+    //resolution = cJSON_CreateObject();
+    //cJSON_AddItemToArray(resolutions, resolution);
+    //width = cJSON_CreateNumber(resolution_numbers[index][0]);
+    //cJSON_AddItemToObject(resolution, "width", width);
+    cJSON *monitor = cJSON_CreateObject();
+    reds = cJSON_AddArrayToObject(monitor, "reds");
+    blues = cJSON_AddArrayToObject(monitor, "blues");
+    for (int i = 0; i < MAX; i++) {
+        if (!rteam[i].online) continue;
+        cJSON *red = red = cJSON_CreateObject();
+        cJSON_AddItemToArray(reds, red);
+        cJSON_AddStringToObject(reds, "name", rteam[i].name);
+        cJSON_AddNumberToObject(reds, "x", rteam[i].loc.x);
+        cJSON_AddNumberToObject(reds, "y", rteam[i].loc.y);
+    }
+    for (int i = 0; i < MAX; i++) {
+        if (!bteam[i].online) continue;
+        cJSON *blue = blue = cJSON_CreateObject();
+        cJSON_AddItemToArray(blues, blue);
+        cJSON_AddStringToObject(reds, "name", bteam[i].name);
+        cJSON_AddNumberToObject(reds, "x", bteam[i].loc.x);
+        cJSON_AddNumberToObject(reds, "y", bteam[i].loc.y);
+    }
+    balls = cJSON_AddItemToObject(monitor);
+    cJSON_AddNumberToObject(balls, "who", ball_status.who);
+    cJSON_AddStringToObject(balls, "name", ball_status.name);
+    cJSON_AddNumberToObject(balls, "x", ball.x);
+    cJSON_AddNumberToObject(balls, "y", ball.y);
+    return string;
+}
+
+void send_cjson(char *string) {
+    return ;
+}
+
 void re_draw() {
     werase(Football_t);
     werase(Football);
@@ -92,6 +138,8 @@ void re_draw() {
     re_draw_team(rteam);
     re_draw_team(bteam);
     re_draw_ball();
+    char *string = create_cjson_football();
+    send_cjson(string);
     wrefresh(Football_t);
     wrefresh(Football);
     return ;

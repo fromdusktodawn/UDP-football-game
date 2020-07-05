@@ -26,15 +26,16 @@
 #include <sys/time.h>
 #include <signal.h>
 #include <pthread.h>
+#include <cjson/cJSON.h>
 #include <poll.h>
 #include <sys/select.h>
 #include <math.h>
 #include <errno.h>
 #include "./datatype.h"
 #include "./game.h"
+#include "./global.h"
 #include "./ball_status.h"
 #include "./color.h"
-#include "./global.h"
 #include "./send_chat.h"
 #include "./thread_pool.h"
 #include "./heart_beat.h"
