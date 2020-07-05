@@ -114,7 +114,7 @@ void *draw(void *arg) {
     return NULL;
 }
 
-int Message_num = -1;
+int Message_num = 0;
 void show_message(WINDOW *win, struct User *user, char *msg, int type) {
     time_t time_now = time(NULL);
     struct tm* tm = localtime(&time_now);
@@ -140,6 +140,6 @@ void show_message(WINDOW *win, struct User *user, char *msg, int type) {
     wattron(win, COLOR_PAIR(5));
     w_gotoxy_puts(win, 1, Message_num, timestr);
     Message_num++;
-    //wrefresh(win);
+    wrefresh(win);
     return ;
 }

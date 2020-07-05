@@ -25,7 +25,7 @@ struct LogResponse {
 
 struct User {
     int online;
-    int team, fd;
+    int team, fd, carry;
     int flag; // 未响应的次数
     char name[20];
     //struct sockaddr_in addr;

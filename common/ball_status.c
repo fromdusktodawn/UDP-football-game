@@ -28,6 +28,7 @@ int can_kick(struct Point *loc, int strength) {
         ball_status.a.y = -3 * dy;
         ball_status.v.x = strength * 8 * dx;
         ball_status.v.y = strength * 8 * dy;
+        ball_status.carry = 0;
         return 1;
     }
     return 0;
@@ -40,7 +41,24 @@ int can_stop(struct Point *loc) {
         ball_status.a.y = 0;
         ball_status.v.x = 0;
         ball_status.v.y = 0;
+        ball_status.carry = 0;
         return 1;
     }
     return 0;
 }
+
+int can_carry(struct User *user) {
+    int px = user->loc.x - 2, py = user->loc.y - 1;
+    if (abs(px - (int)ball.x) <= 2 && abs(py - (int)ball.y) <= 2) {
+        ball_status.a.x = 0;
+        ball_status.a.y = 0;
+        ball_status.v.x = 0;
+        ball_status.v.y = 0;
+        ball_status.carry = 1;
+        return 1;
+    }
+    ball_status.carry = 0;
+    user->carry = 0;
+    return 0;
+}
+

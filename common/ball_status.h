@@ -10,5 +10,5 @@
 
 int can_kick(struct Point *loc, int strength);
 int can_stop(struct Point *loc);
-
+int can_carry(struct User *user);
 #endif

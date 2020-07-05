@@ -2,7 +2,7 @@
 #include "thread_pool.h"
 #include "head.h"
 extern struct Map court;
-extern WINDOW *Message;
+extern WINDOW *Message, *Football;
 extern int bepollfd, repollfd;
 extern struct User *rteam, *bteam;
 extern struct Bpoint ball;
@@ -48,6 +48,7 @@ void do_echo(struct User *user) {
             if (user->loc.x >= court.width - 1 + 4) user->loc.x = court.width - 1 + 4;
             if (user->loc.y <= 1 - 1) user->loc.y = 1 - 1;
             if (user->loc.y >= court.heigth - 1 + 2) user->loc.y = court.heigth - 1 + 2;
+            if (abs(user->loc.x - 2 - (int)ball.x) >= 2 && abs(user->loc.y - 1 - (int)ball.y) <= 2) user->carry = 0;
         }
         if (msg.ctl.action & ACTION_KICK) {
             show_data_stream('k');
@@ -60,6 +61,18 @@ void do_echo(struct User *user) {
             show_data_stream('s');
             if (can_stop(&user->loc)) {
                 ball_status.who = user->team;
+                strcpy(ball_status.name, user->name);
+            }
+        }
+        if (msg.ctl.action & ACTION_CARRY) {
+            show_data_stream('c');
+            if (can_carry(user)) {
+                user->carry = 1;
+                int px = user->loc.x - 2, py = user->loc.y - 1;
+                ball.x = px;
+                ball.y = py + 1;
+                ball_status.who = user->team;
+                //wrefresh(Football);
                 strcpy(ball_status.name, user->name);
             }
         }

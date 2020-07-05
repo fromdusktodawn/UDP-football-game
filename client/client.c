@@ -165,6 +165,12 @@ int main(int argc, char **argv)  {
             case 'j': {
                 send_ctl_stop();
             } break;
+            case 'k': {
+                send_ctl_kick();
+            } break;
+            case 'l': {
+                send_ctl_carry();
+            } break;
             default : break;
         }
     }
