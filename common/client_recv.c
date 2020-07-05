@@ -10,6 +10,8 @@
 extern int sockfd;
 extern WINDOW *Message;
 extern struct User bteam[MAX], rteam[MAX];
+extern struct Bpoint ball;
+extern struct Score score;
 
 void *client_recv(void *arg) {
     while (1) {
@@ -33,63 +35,55 @@ void *client_recv(void *arg) {
             DBG(GREEN"Server is going to stop.\n"NONE);
             endwin();
             exit(0);
+        } else if (msg.type & FT_SCORE) {
+            cJSON *monitor_json = cJSON_Parse(msg.msg);
+            cJSON *scores = cJSON_GetObjectItemCaseSensitive(monitor_json, "score");
+            cJSON *blue = cJSON_GetObjectItemCaseSensitive(scores, "blue");
+            cJSON *red = cJSON_GetObjectItemCaseSensitive(scores, "red");
+            if (blue == NULL || red == NULL) {
+                Show_Message(, , msg.msg, 1);
+                break;
+            }
+            score.blue = blue->valueint;
+            score.red = red->valueint;
+            Show_Score();
         } else if (msg.type & FT_GAME) {
             cJSON *monitor_json = cJSON_Parse(msg.msg);
             cJSON *reds = cJSON_GetObjectItemCaseSensitive(monitor_json, "reds");
             cJSON *blues = cJSON_GetObjectItemCaseSensitive(monitor_json, "blues");
             cJSON *balls = cJSON_GetObjectItemCaseSensitive(monitor_json, "ball");
+            if (monitor_json == NULL || reds == NULL || blues == NULL || balls == NULL) break;
             cJSON *red = NULL, *blue = NULL;
-            //int cnt = 0;
-            //cJSON_ArrayForEach(red, reds) {
-            //    if (red == NULL) break;
-            //    cJSON *name = cJSON_GetObjectItemCaseSensitive(red, "name");
-            //    cJSON *x = cJSON_GetObjectItemCaseSensitive(red, "x");
-            //    cJSON *y = cJSON_GetObjectItemCaseSensitive(red, "y");
-            //    rteam[cnt].online = 1;
-            //    rteam[cnt].loc.x = (int)x->valueint;
-            //    rteam[cnt].loc.y = (int)y->valueint;
-            //    strcpy(rteam[cnt].name, name->valuestring);
-            //    cnt++;
-            //}
-            //cnt = 0;
-            //cJSON_ArrayForEach(blue, blues) {
-            //    if (blue == NULL) break;
-            //    cJSON *name = cJSON_GetObjectItemCaseSensitive(blue, "name");
-            //    cJSON *x = cJSON_GetObjectItemCaseSensitive(blue, "x");
-            //    cJSON *y = cJSON_GetObjectItemCaseSensitive(blue, "y");
-            //    if (x == NULL) {
-            //        char tmp[512] = {0};
-            //        sprintf(tmp, "NULL");
-            //        Show_Message(, , tmp, 1);
-            //    }
-            //    //rteam[cnt].online = 1;
-            //    //rteam[cnt].loc.x = x->valueint;
-            //    //rteam[cnt].loc.y = y->valueint;
-            //    //strcpy(rteam[cnt++].name, name->valuestring);
-            //}
             int rsize = cJSON_GetArraySize(reds);
             int bsize = cJSON_GetArraySize(blues);
             //char tmp[512] = {0};
             //sprintf(tmp, "%d", bsize);
             //Show_Message(, , tmp, 1);
             for (int i = 0; i < rsize; i++) {
-                //
+                red = cJSON_GetArrayItem(reds, i);
+                cJSON *name = cJSON_GetObjectItemCaseSensitive(red, "name");
+                cJSON *x = cJSON_GetObjectItemCaseSensitive(red, "x");
+                cJSON *y = cJSON_GetObjectItemCaseSensitive(red, "y");
+                rteam[i].online = 1;
+                rteam[i].loc.x = x->valueint;
+                rteam[i].loc.y = y->valueint;
+                strcpy(rteam[i].name, name->valuestring);
             }
             for (int i = 0; i < bsize; i++) {
                 blue = cJSON_GetArrayItem(blues, i);
                 cJSON *name = cJSON_GetObjectItemCaseSensitive(blue, "name");
-                if (name == NULL) {
-                    char tmp[512] = {0};
-                    sprintf(tmp, "blue == NULL");
-                    Show_Message(, , tmp, 1);
-                }
-                //cJSON *x = cJSON_GetObjectItemCaseSensitive(blue, "x");
-                //cJSON *y = cJSON_GetObjectItemCaseSensitive(blue, "y");
-                //rteam[i].online = 1;
-                //rteam[i].loc.x = x->valueint;
-                //rteam[i].loc.y = y->valueint;
-                //strcpy(rteam[i].name, name->valuestring);
+                cJSON *x = cJSON_GetObjectItemCaseSensitive(blue, "x");
+                cJSON *y = cJSON_GetObjectItemCaseSensitive(blue, "y");
+                bteam[i].online = 1;
+                bteam[i].loc.x = x->valueint;
+                bteam[i].loc.y = y->valueint;
+                strcpy(bteam[i].name, name->valuestring);
             }
+            cJSON *x = cJSON_GetObjectItemCaseSensitive(balls, "x");
+            cJSON *y = cJSON_GetObjectItemCaseSensitive(balls, "y");
+            if (x == NULL || y == NULL) break;
+            ball.x = x->valuedouble;
+            ball.y = y->valuedouble;
             client_re_draw();
         } else {
             DBG(GREEN"MSG unsupprotable\n"NONE);

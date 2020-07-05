@@ -10,6 +10,7 @@
 
 extern struct User bteam[MAX], rteam[MAX];
 extern WINDOW *Football_t, *Football;
+extern struct Bpoint ball;
 
 void client_re_draw() {
     werase(Football_t);
@@ -30,5 +31,6 @@ void client_re_draw() {
         w_gotoxy_putc(Football_t, rteam[i].loc.x, rteam[i].loc.y, p);
         w_gotoxy_puts(Football_t, rteam[i].loc.x + 1, rteam[i].loc.y - 1, rteam[i].name);
     }
+    w_gotoxy_putc(Football, (int)ball.x, (int)ball.y, 'O');
     return ;
 }

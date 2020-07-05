@@ -60,6 +60,7 @@ Write	common/game.c	/^WINDOW *Football, *Football_t, *Message, *Help, *Score, *W
 YELLOW	common/color.h	18;"	d
 _BALL_STATUS_H	common/ball_status.h	9;"	d
 _CLIENT_RECV_H	common/client_recv.h	9;"	d
+_CLIENT_RE_DRAW_H	common/client_re_draw.h	9;"	d
 _COLOR_H	common/color.h	9;"	d
 _COMMON_H	common/common.h	9;"	d
 _DATATYPE_H	common/datatype.h	9;"	d
@@ -83,10 +84,12 @@ action	common/datatype.h	/^    int action;$/;"	m	struct:Ctrl
 add_event	common/udp_epoll.c	/^void add_event(int epollfd, int fd, int events){$/;"	f
 add_event_ptr	common/udp_epoll.c	/^void add_event_ptr(int epollfd, int fd, int events, struct User *user){$/;"	f
 add_to_sub_reactor	common/udp_epoll.c	/^void add_to_sub_reactor(struct User *user) {$/;"	f
+ball	client/client.c	/^struct Bpoint ball;$/;"	v	typeref:struct:Bpoint
 ball	server/server.c	/^struct Bpoint ball;$/;"	v	typeref:struct:Bpoint
 ball_status	server/server.c	/^struct BallStatus ball_status;$/;"	v	typeref:struct:BallStatus
 bepollfd	server/server.c	/^int bepollfd, repollfd;$/;"	v
 blue	common/datatype.h	/^    int blue;$/;"	m	struct:Score
+bteam	client/client.c	/^struct User bteam[MAX], rteam[MAX];$/;"	v	typeref:struct:User
 bteam	server/server.c	/^struct User *bteam;$/;"	v	typeref:struct:User
 can_carry	common/ball_status.c	/^int can_carry(struct User *user) {$/;"	f
 can_kick	common/ball_status.c	/^int can_kick(struct Point *loc, int strength) {$/;"	f
@@ -95,6 +98,7 @@ carry	common/datatype.h	/^    int team, fd, carry;$/;"	m	struct:User
 carry	common/datatype.h	/^    int who, carry;$/;"	m	struct:BallStatus
 chat_msg	client/client.c	/^struct FootBallMsg chat_msg;$/;"	v	typeref:struct:FootBallMsg
 check_online	common/udp_epoll.c	/^int check_online(struct LogRequest *request) {$/;"	f
+client_re_draw	common/client_re_draw.c	/^void client_re_draw() {$/;"	f
 client_recv	common/client_recv.c	/^void *client_recv(void *arg) {$/;"	f
 cond	common/thread_pool.h	/^    pthread_cond_t cond;$/;"	m	struct:task_queue
 conf	client/client.c	/^char *conf = ".\/client.conf";$/;"	v
@@ -153,7 +157,9 @@ re_draw_play	common/server_re_draw.c	/^void re_draw_play(int team, char *name, s
 re_draw_team	common/server_re_draw.c	/^void re_draw_team(struct User *team) {$/;"	f
 red	common/datatype.h	/^    int red;$/;"	m	struct:Score
 repollfd	server/server.c	/^int bepollfd, repollfd;$/;"	v
+rteam	client/client.c	/^struct User bteam[MAX], rteam[MAX];$/;"	v	typeref:struct:
 rteam	server/server.c	/^struct User *rteam;$/;"	v	typeref:struct:User
+score	client/client.c	/^struct Score score;$/;"	v	typeref:struct:Score
 score	common/global.c	/^struct Score score;$/;"	v	typeref:struct:Score
 send_chat	common/send_chat.c	/^void send_chat() {$/;"	f
 send_cjson	common/server_re_draw.c	/^void send_cjson(char *string) {$/;"	f
