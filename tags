@@ -44,7 +44,7 @@ MAXTASK	common/thread_pool.h	12;"	d
 MAXTHREAD	common/thread_pool.h	13;"	d
 Map	common/datatype.h	/^struct Map {$/;"	s
 Message	common/game.c	/^WINDOW *Football, *Football_t, *Message, *Help, *Score, *Write;$/;"	v
-Message_num	common/game.c	/^int Message_num = -1;$/;"	v
+Message_num	common/game.c	/^int Message_num = 0;$/;"	v
 NONE	common/color.h	11;"	d
 PINK	common/color.h	23;"	d
 Point	common/datatype.h	/^struct Point {$/;"	s
@@ -52,6 +52,7 @@ RED	common/color.h	14;"	d
 Score	common/datatype.h	/^struct Score {$/;"	s
 Score	common/game.c	/^WINDOW *Football, *Football_t, *Message, *Help, *Score, *Write;$/;"	v
 Show_Message	common/game.h	14;"	d
+Show_Score	common/game.c	/^void Show_Score() {$/;"	f
 Speed	common/datatype.h	/^struct Speed {$/;"	s
 User	common/datatype.h	/^struct User {$/;"	s
 WINDOW	common/ball_status.c	10;"	d	file:
@@ -100,6 +101,7 @@ conf	client/client.c	/^char *conf = ".\/client.conf";$/;"	v
 conf	server/server.c	/^char *conf = ".\/server.conf";$/;"	v
 conf_ans	common/global.c	/^char conf_ans[50] = {0};$/;"	v
 court	common/game.c	/^struct Map court;$/;"	v	typeref:struct:Map
+create_cjson_football	common/server_re_draw.c	/^char *create_cjson_football() {$/;"	f
 create_newwin	common/game.c	/^WINDOW *create_newwin(int width, int heigth, int startx, int starty) {$/;"	f
 ctl	common/datatype.h	/^    struct Ctrl ctl;$/;"	m	struct:FootBallMsg	typeref:struct:FootBallMsg::Ctrl
 ctl_msg	client/client.c	/^struct FootBallMsg ctl_msg;$/;"	v	typeref:struct:FootBallMsg
@@ -152,8 +154,9 @@ re_draw_team	common/server_re_draw.c	/^void re_draw_team(struct User *team) {$/;
 red	common/datatype.h	/^    int red;$/;"	m	struct:Score
 repollfd	server/server.c	/^int bepollfd, repollfd;$/;"	v
 rteam	server/server.c	/^struct User *rteam;$/;"	v	typeref:struct:User
-score	server/server.c	/^struct Score score;$/;"	v	typeref:struct:Score
+score	common/global.c	/^struct Score score;$/;"	v	typeref:struct:Score
 send_chat	common/send_chat.c	/^void send_chat() {$/;"	f
+send_cjson	common/server_re_draw.c	/^void send_cjson(char *string) {$/;"	f
 send_ctl	common/send_ctl.c	/^void send_ctl() {$/;"	f
 send_ctl_carry	common/send_ctl.c	/^void send_ctl_carry() {$/;"	f
 send_ctl_kick	common/send_ctl.c	/^void send_ctl_kick() {$/;"	f

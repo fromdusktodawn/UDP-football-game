@@ -105,28 +105,42 @@ char *create_cjson_football() {
     for (int i = 0; i < MAX; i++) {
         if (!rteam[i].online) continue;
         cJSON *red = red = cJSON_CreateObject();
-        cJSON_AddItemToArray(reds, red);
         cJSON_AddStringToObject(reds, "name", rteam[i].name);
         cJSON_AddNumberToObject(reds, "x", rteam[i].loc.x);
         cJSON_AddNumberToObject(reds, "y", rteam[i].loc.y);
+        cJSON_AddItemToArray(reds, red);
     }
     for (int i = 0; i < MAX; i++) {
         if (!bteam[i].online) continue;
         cJSON *blue = blue = cJSON_CreateObject();
-        cJSON_AddItemToArray(blues, blue);
         cJSON_AddStringToObject(reds, "name", bteam[i].name);
         cJSON_AddNumberToObject(reds, "x", bteam[i].loc.x);
         cJSON_AddNumberToObject(reds, "y", bteam[i].loc.y);
+        cJSON_AddItemToArray(blues, blue);
     }
-    balls = cJSON_AddItemToObject(monitor);
+    cJSON_AddItemToObject(monitor, "ball", balls);
     cJSON_AddNumberToObject(balls, "who", ball_status.who);
     cJSON_AddStringToObject(balls, "name", ball_status.name);
     cJSON_AddNumberToObject(balls, "x", ball.x);
     cJSON_AddNumberToObject(balls, "y", ball.y);
+    string = cJSON_Print(monitor);
     return string;
 }
 
 void send_cjson(char *string) {
+    for (int i = 0; i < MAX; i++) {
+        if (bteam[i].online) {
+            struct FootBallMsg msg;
+            msg.type = FT_GAME;
+            strcpy(msg.msg, string);
+            send(bteam[i].fd, (void *)&msg, sizeof(msg), 0);
+        }
+        if (rteam[i].online) {
+            struct FootBallMsg msg;
+            msg.type = FT_GAME;
+            send(rteam[i].fd, (void *)&msg, sizeof(msg), 0);
+        }
+    }
     return ;
 }
 
