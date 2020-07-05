@@ -11,6 +11,10 @@ char server_ip[20] = {0};
 int server_port = 0;
 char *conf = "./client.conf";
 int sockfd;
+struct User bteam[MAX], rteam[MAX];
+struct Score score;
+struct Bpoint ball;
+
 extern struct Map court;
 extern WINDOW *Write;
 struct FootBallMsg chat_msg;

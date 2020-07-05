@@ -44,6 +44,7 @@
 #include "./server_re_draw.h"
 #include "./server_exit.h"
 #include "./client_recv.h"
+#include "./client_re_draw.h"
 #include "./show_data_stream.h"
 #include "./show_strength.h"
 #include "./sub_reactor.h"
